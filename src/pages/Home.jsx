@@ -3,8 +3,6 @@ import {
   Box,
   Button,
   useDisclosure,
-  FormControl,
-  FormLabel,
   Input,
   Modal,
   ModalBody,
@@ -14,6 +12,10 @@ import {
   ModalHeader,
   ModalOverlay,
   Textarea,
+  Link,
+  Text,
+  Divider,
+  Container,
 } from "@chakra-ui/react";
 import React from "react";
 import Navbar from "../components/Navbar";
@@ -27,6 +29,29 @@ function Home() {
   return (
     <Box>
       <Navbar />
+
+      <Container
+        background={"white"}
+        maxW={"60%"}
+        mx={"auto"}
+        padding={"20px 15px"}
+        borderBottom={"1px solid #e6e6e6"}
+      >
+        <Link>How kill to Christopher</Link>
+        <Box display={"flex"} height="16px" mt={"4px"}>
+          <Text fontSize="xs" color={"gray.400"}>
+            by PavelM
+          </Text>
+          <Divider orientation="vertical" mx={"4px"} />
+          <Text fontSize="xs" color={"gray.400"}>
+            6/14/2019
+          </Text>
+          <Divider orientation="vertical" mx={"4px"} />
+          <Text fontSize="xs" color={"gray.400"}>
+            1 comments
+          </Text>
+        </Box>
+      </Container>
 
       <Modal
         size={"xl"}

@@ -8,7 +8,7 @@ const linkStyles = {
   _hover: { color: "#ffffff" },
 };
 
-function App() {
+function Navbar() {
   return (
     <ChakraProvider theme={theme}>
       {/* move this to navbar component */}
@@ -34,4 +34,4 @@ function App() {
   );
 }
 
-export default App;
+export default Navbar;

@@ -1,10 +1,10 @@
-import { Box } from "@chakra-ui/react";
+import { Box , Heading } from "@chakra-ui/react";
 import React from "react";
 
 function Home() {
   return (
     <Box>
-      <Heading>Welcome to Chaos</Heading>
+      <Heading>Welcome to Chaos Home</Heading>
     </Box>
   );
 }

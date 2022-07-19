@@ -1,4 +1,4 @@
-import { Box, ChakraProvider, Heading, Link } from "@chakra-ui/react";
+import { Box, ChakraProvider, Link } from "@chakra-ui/react";
 import theme from "./theme";
 
 const linkStyles = {

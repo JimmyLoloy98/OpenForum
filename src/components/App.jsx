@@ -1,5 +1,5 @@
 import { Box, ChakraProvider, Heading, Link } from "@chakra-ui/react";
-import theme from "./Theme";
+import theme from "./theme";
 
 const linkStyles = {
   color: "#ffffffcc",

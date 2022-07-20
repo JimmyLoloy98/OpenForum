@@ -21,94 +21,44 @@ function App() {
     JSON.parse(localStorage.getItem("person")) != null
       ? JSON.parse(localStorage.getItem("person"))
       : null;
-  let discussion = [
-    {
-      idDiscussion: 10,
-      autor: "J.K. Rowling",
-      date: "01/01/2001",
-      title: "Harry Potter y la piedra filosofal",
-      countResponses: 10,
-      description: "Harry Potter y la piedra filosofal",
-      replys: [
-        {
-          idReply: 11,
-          author: "J.K. Rowling",
-          date: "01/01/2022",
-          content: "Harry Potter y la piedra filosofal",
-        },
-      ],
-    },
-    {
-      idDiscussion: 10,
-      autor: "J.K. Rowling",
-      date: "01/01/2001",
-      title: "Harry Potter y la piedra filosofal",
-      countResponses: 10,
-      description: "Harry Potter y la piedra filosofal",
-      replys: [
-        {
-          idReply: 11,
-          author: "J.K. Rowling",
-          date: "01/01/2022",
-          content: "Harry Potter y la piedra filosofal",
-        },
-      ],
-    },
-  ];
+  let discussions =
+    JSON.parse(localStorage.getItem("discussions")) != null
+      ? JSON.parse(localStorage.getItem("discussions"))
+      : [
+          {
+            idDiscussion: 10,
+            autor: "J.K. Rowling",
+            date: "01/01/2001",
+            title: "Harry Potter y la piedra filosofal",
+            countResponses: 10,
+            description: "Harry Potter y la piedra filosofal",
+            replys: [
+              {
+                idReply: 11,
+                author: "J.K. Rowling",
+                date: "01/01/2022",
+                content: "Harry Potter y la piedra filosofal",
+              },
+            ],
+          },
+        ];
 
   let [user, setUser] = useState(users);
-  // let [discussion, setDiscussion] = useState(discussion);
-
-  /* let globalState =
-    localStorage.getItem("estado") != null
-      ? localStorage.getItem("estado")
-      : {
-          user: {
-            username: "hijodedios",
-            email: "pavel.mansilla@gmail.com",
-          },
-          discussions: [
-            {
-              idDiscussion: 10,
-              autor: "J.K. Rowling",
-              date: "01/01/2001",
-              title: "Harry Potter y la piedra filosofal",
-              countResponses: 10,
-              description: "Harry Potter y la piedra filosofal",
-              replys: [
-                {
-                  idReply: 11,
-                  author: "J.K. Rowling",
-                  date: "01/01/2022",
-                  content: "Harry Potter y la piedra filosofal",
-                },
-              ],
-            },
-            {
-              idDiscussion: 10,
-              autor: "J.K. Rowling",
-              date: "01/01/2001",
-              title: "Harry Potter y la piedra filosofal",
-              countResponses: 10,
-              description: "Harry Potter y la piedra filosofal",
-              replys: [
-                {
-                  idReply: 11,
-                  author: "J.K. Rowling",
-                  date: "01/01/2022",
-                  content: "Harry Potter y la piedra filosofal",
-                },
-              ],
-            },
-          ],
-        }; */
+  let [discussion, setDiscussion] = useState(discussions);
 
   useEffect(() => {
     console.log("estoy en un effect react js");
   });
 
   return (
-    <DataContext.Provider value={{ setUser: setUser }}>
+    <DataContext.Provider
+      value={{
+        setUser: setUser,
+        discussions: discussion,
+        setDiscussion: setDiscussion,
+        user: user,
+      }}
+    >
       <ChakraProvider theme={theme}>
         <BrowserRouter>
           <Routes>

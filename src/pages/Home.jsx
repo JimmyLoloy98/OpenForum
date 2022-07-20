@@ -33,7 +33,7 @@ function Discussion({ data }) {
       <Link>{data.title}</Link>
       <Box display={"flex"} height="16px" mt={"4px"}>
         <Text fontSize="xs" color={"gray.400"}>
-          by {data.autor}
+          by {data.author}
         </Text>
         <Divider orientation="vertical" mx={"4px"} />
         <Text fontSize="xs" color={"gray.400"}>
@@ -50,27 +50,27 @@ function Discussion({ data }) {
 
 function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  let globalState = useContext(DataContext);
 
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
-
-  const globalData = useContext(DataContext);
-
-  const discussions = globalData.data.discussions;
-
   const [newDiscussion, setNewDiscussion] = useState({
-    autor: "",
-    date: "",
+    author: globalState.user.username,
+    date: dateNow(),
     title: "",
     description: "",
     countResponses: 10,
   });
 
+  function dateNow() {
+    return new Date().toLocaleDateString().split(",")[0];
+  }
+
   return (
-    <Box>
+    <Box mb={"28"}>
       <Navbar />
 
-      {discussions.map((discussion, index) => {
+      {globalState.discussions.map((discussion, index) => {
         return <Discussion data={discussion} key={index} />;
       })}
 
@@ -93,7 +93,7 @@ function Home() {
               placeholder="Discussion Title"
               autoFocus
               focusBorderColor="orange.400"
-              onInput={(e) => {
+              onChange={(e) => {
                 setNewDiscussion({ ...newDiscussion, title: e.target.value });
               }}
             />
@@ -103,7 +103,7 @@ function Home() {
               placeholder="Body Title"
               mt={6}
               focusBorderColor="orange.400"
-              onInput={(e) => {
+              onChange={(e) => {
                 setNewDiscussion({
                   ...newDiscussion,
                   description: e.target.value,
@@ -118,19 +118,25 @@ function Home() {
               mr={3}
               w={"100%"}
               onClick={() => {
-                let nowDate = new Date().toLocaleDateString().split(",")[0];
+                // globalState.discussions == null ? "" : "";
+                localStorage.setItem(
+                  "discussions",
+                  JSON.stringify(globalState.discussions)
+                );
+                let getDiscussions = JSON.parse(
+                  localStorage.getItem("discussions")
+                );
+                localStorage.setItem(
+                  "discussions",
+                  JSON.stringify([...getDiscussions, newDiscussion])
+                );
 
-                globalData.setData({
-                  ...globalData.data,
-                  discussions: [
-                    ...globalData.data.discussions,
-                    {
-                      ...newDiscussion,
-                      date: nowDate,
-                      autor: globalData.data.user.username,
-                    },
-                  ],
-                });
+                globalState.setDiscussion([
+                  ...globalState.discussions,
+                  {
+                    ...newDiscussion,
+                  },
+                ]);
 
                 onClose();
               }}

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Box, ChakraProvider, Heading } from "@chakra-ui/react";
-import theme from "./theme";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Home from "../pages/Home";
-import Login from "../pages/Login";
+import { ChakraProvider } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Discussion from "../pages/Discussion";
+import Home from "../pages/Home";
 import ItemDiscussion from "../pages/ItemDiscussion";
+import Login from "../pages/Login";
+import theme from "./theme";
 
 import DataContext from "../context/context";
 
@@ -17,7 +17,49 @@ const linkStyles = {
 };
 
 function App() {
-  let globalState =
+  let users =
+    JSON.parse(localStorage.getItem("person")) != null
+      ? JSON.parse(localStorage.getItem("person"))
+      : null;
+  let discussion = [
+    {
+      idDiscussion: 10,
+      autor: "J.K. Rowling",
+      date: "01/01/2001",
+      title: "Harry Potter y la piedra filosofal",
+      countResponses: 10,
+      description: "Harry Potter y la piedra filosofal",
+      replys: [
+        {
+          idReply: 11,
+          author: "J.K. Rowling",
+          date: "01/01/2022",
+          content: "Harry Potter y la piedra filosofal",
+        },
+      ],
+    },
+    {
+      idDiscussion: 10,
+      autor: "J.K. Rowling",
+      date: "01/01/2001",
+      title: "Harry Potter y la piedra filosofal",
+      countResponses: 10,
+      description: "Harry Potter y la piedra filosofal",
+      replys: [
+        {
+          idReply: 11,
+          author: "J.K. Rowling",
+          date: "01/01/2022",
+          content: "Harry Potter y la piedra filosofal",
+        },
+      ],
+    },
+  ];
+
+  let [user, setUser] = useState(users);
+  // let [discussion, setDiscussion] = useState(discussion);
+
+  /* let globalState =
     localStorage.getItem("estado") != null
       ? localStorage.getItem("estado")
       : {
@@ -59,43 +101,32 @@ function App() {
               ],
             },
           ],
-        };
-
-  let [state, setState] = useState(globalState);
+        }; */
 
   useEffect(() => {
     console.log("estoy en un effect react js");
   });
 
-  console.log("el estado global", localStorage.getItem("estado"));
   return (
-    <DataContext.Provider value={{ data: state, setData: setState }}>
+    <DataContext.Provider value={{ setUser: setUser }}>
       <ChakraProvider theme={theme}>
         <BrowserRouter>
           <Routes>
             <Route
               path="/"
-              element={!globalState.user ? <Navigate to="login" /> : <Home />}
+              element={!user ? <Navigate to="login" /> : <Home />}
             />
             <Route
               path="/login"
-              element={!globalState.user ? <Login /> : <Navigate to="/" />}
+              element={!user ? <Login /> : <Navigate to="/" />}
             ></Route>
             <Route
               path="/discussion"
-              element={
-                !globalState.user ? <Navigate to="/login" /> : <Discussion />
-              }
+              element={!user ? <Navigate to="/login" /> : <Discussion />}
             ></Route>
             <Route
               path="/discussion/:id"
-              element={
-                !globalState.user ? (
-                  <Navigate to="/login" />
-                ) : (
-                  <ItemDiscussion />
-                )
-              }
+              element={!user ? <Navigate to="/login" /> : <ItemDiscussion />}
             ></Route>
           </Routes>
         </BrowserRouter>

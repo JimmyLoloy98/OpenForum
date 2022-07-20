@@ -22,7 +22,6 @@ import Navbar from "../components/Navbar";
 import DataContext from "../context/context";
 
 function Discussion({ data }) {
-  console.log(data);
   return (
     <Container
       background={"white"}
@@ -57,14 +56,16 @@ function Home() {
 
   const globalData = useContext(DataContext);
 
-  const discussions = globalData.discussions;
+  const discussions = globalData.data.discussions;
 
   const [newDiscussion, setNewDiscussion] = useState({
     autor: "",
     date: "",
     title: "",
     description: "",
+    countResponses: 10,
   });
+
   return (
     <Box>
       <Navbar />
@@ -117,7 +118,21 @@ function Home() {
               mr={3}
               w={"100%"}
               onClick={() => {
-                console.log("agregamos la nueva discussion");
+                let nowDate = new Date().toLocaleDateString().split(",")[0];
+
+                globalData.setData({
+                  ...globalData.data,
+                  discussions: [
+                    ...globalData.data.discussions,
+                    {
+                      ...newDiscussion,
+                      date: nowDate,
+                      autor: globalData.data.user.username,
+                    },
+                  ],
+                });
+
+                onClose();
               }}
             >
               Create Discussion

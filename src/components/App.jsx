@@ -26,7 +26,7 @@ function App() {
       ? JSON.parse(localStorage.getItem("discussions"))
       : [
           {
-            idDiscussion: 10,
+            idDiscussion: randomId(),
             autor: "J.K. Rowling",
             date: "01/01/2001",
             title: "Harry Potter y la piedra filosofal",
@@ -45,6 +45,10 @@ function App() {
 
   let [user, setUser] = useState(users);
   let [discussion, setDiscussion] = useState(discussions);
+
+  function randomId() {
+    return Math.floor(Math.random() * 1000000);
+  }
 
   useEffect(() => {
     console.log("estoy en un effect react js");

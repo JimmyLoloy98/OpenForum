@@ -17,31 +17,59 @@ const linkStyles = {
 };
 
 function App() {
-  let globalState = {
-    user: {
-      username: "hijodedios",
-      email: "pavel.mansilla@gmail.com",
-    },
-    discussion: {
-      idDiscussion: 10,
-      autor: "J.K. Rowling",
-      date: "01/01/2001",
-      title: "Harry Potter y la piedra filosofal",
-      countResponses: 10,
-      description: "Harry Potter y la piedra filosofal",
-      replys: [
-        {
-          idReply: 11,
-          author: "J.K. Rowling",
-          date: "01/01/2022",
-          content: "Harry Potter y la piedra filosofal",
-        },
-      ],
-    },
-  };
+  let globalState =
+    localStorage.getItem("estado") != null
+      ? localStorage.getItem("estado")
+      : {
+          user: {
+            username: "hijodedios",
+            email: "pavel.mansilla@gmail.com",
+          },
+          discussions: [
+            {
+              idDiscussion: 10,
+              autor: "J.K. Rowling",
+              date: "01/01/2001",
+              title: "Harry Potter y la piedra filosofal",
+              countResponses: 10,
+              description: "Harry Potter y la piedra filosofal",
+              replys: [
+                {
+                  idReply: 11,
+                  author: "J.K. Rowling",
+                  date: "01/01/2022",
+                  content: "Harry Potter y la piedra filosofal",
+                },
+              ],
+            },
+            {
+              idDiscussion: 10,
+              autor: "J.K. Rowling",
+              date: "01/01/2001",
+              title: "Harry Potter y la piedra filosofal",
+              countResponses: 10,
+              description: "Harry Potter y la piedra filosofal",
+              replys: [
+                {
+                  idReply: 11,
+                  author: "J.K. Rowling",
+                  date: "01/01/2022",
+                  content: "Harry Potter y la piedra filosofal",
+                },
+              ],
+            },
+          ],
+        };
 
+  let [state, setState] = useState(globalState);
+
+  useEffect(() => {
+    console.log("estoy en un effect react js");
+  });
+
+  console.log("el estado global", localStorage.getItem("estado"));
   return (
-    <DataContext.Provider value={globalState}>
+    <DataContext.Provider value={{ data: state, setData: setState }}>
       <ChakraProvider theme={theme}>
         <BrowserRouter>
           <Routes>

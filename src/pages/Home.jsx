@@ -17,8 +17,36 @@ import {
   Divider,
   Container,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useContext, useState } from "react";
 import Navbar from "../components/Navbar";
+import DataContext from "../context/context";
+
+function Discussion({ data }) {
+  return (
+    <Container
+      background={"white"}
+      maxW={"60%"}
+      mx={"auto"}
+      padding={"20px 15px"}
+      borderBottom={"1px solid #e6e6e6"}
+    >
+      <Link>{data.title}</Link>
+      <Box display={"flex"} height="16px" mt={"4px"}>
+        <Text fontSize="xs" color={"gray.400"}>
+          by {data.autor}
+        </Text>
+        <Divider orientation="vertical" mx={"4px"} />
+        <Text fontSize="xs" color={"gray.400"}>
+          {data.date}
+        </Text>
+        <Divider orientation="vertical" mx={"4px"} />
+        <Text fontSize="xs" color={"gray.400"}>
+          {data.countResponses} comments
+        </Text>
+      </Box>
+    </Container>
+  );
+}
 
 function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -26,32 +54,25 @@ function Home() {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
 
+  const globalData = useContext(DataContext);
+
+  const discussions = globalData.data.discussions;
+
+  const [newDiscussion, setNewDiscussion] = useState({
+    autor: "",
+    date: "",
+    title: "",
+    description: "",
+    countResponses: 10,
+  });
+
   return (
     <Box>
       <Navbar />
 
-      <Container
-        background={"white"}
-        maxW={"60%"}
-        mx={"auto"}
-        padding={"20px 15px"}
-        borderBottom={"1px solid #e6e6e6"}
-      >
-        <Link>How kill to Christopher</Link>
-        <Box display={"flex"} height="16px" mt={"4px"}>
-          <Text fontSize="xs" color={"gray.400"}>
-            by PavelM
-          </Text>
-          <Divider orientation="vertical" mx={"4px"} />
-          <Text fontSize="xs" color={"gray.400"}>
-            6/14/2019
-          </Text>
-          <Divider orientation="vertical" mx={"4px"} />
-          <Text fontSize="xs" color={"gray.400"}>
-            1 comments
-          </Text>
-        </Box>
-      </Container>
+      {discussions.map((discussion, index) => {
+        return <Discussion data={discussion} key={index} />;
+      })}
 
       <Modal
         size={"xl"}
@@ -72,6 +93,9 @@ function Home() {
               placeholder="Discussion Title"
               autoFocus
               focusBorderColor="orange.400"
+              onInput={(e) => {
+                setNewDiscussion({ ...newDiscussion, title: e.target.value });
+              }}
             />
 
             <Textarea
@@ -79,11 +103,38 @@ function Home() {
               placeholder="Body Title"
               mt={6}
               focusBorderColor="orange.400"
+              onInput={(e) => {
+                setNewDiscussion({
+                  ...newDiscussion,
+                  description: e.target.value,
+                });
+              }}
             />
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="orange" mr={3} w={"100%"}>
+            <Button
+              colorScheme="orange"
+              mr={3}
+              w={"100%"}
+              onClick={() => {
+                let nowDate = new Date().toLocaleDateString().split(",")[0];
+
+                globalData.setData({
+                  ...globalData.data,
+                  discussions: [
+                    ...globalData.data.discussions,
+                    {
+                      ...newDiscussion,
+                      date: nowDate,
+                      autor: globalData.data.user.username,
+                    },
+                  ],
+                });
+
+                onClose();
+              }}
+            >
               Create Discussion
             </Button>
           </ModalFooter>

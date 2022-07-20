@@ -33,9 +33,10 @@ function Login() {
     <>
       <Navbar />
 
-      <Container maxW={"60%"} h={"88vh"} pt={"10%"}>
+      <Container maxW={"60%"} minW={"400px"} h={"88vh"} pt={"10%"}>
         <Box
           maxW={"450px"}
+          minW={"366px"}
           maxH={"320px"}
           mx={"auto"}
           padding={"30px 20px"}

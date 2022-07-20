@@ -1,4 +1,5 @@
 import { AddIcon } from "@chakra-ui/icons";
+import { Link } from "react-router-dom";
 import {
   Box,
   Button,
@@ -12,7 +13,6 @@ import {
   ModalHeader,
   ModalOverlay,
   Textarea,
-  Link,
   Text,
   Divider,
   Container,
@@ -30,7 +30,7 @@ function Discussion({ data }) {
       padding={"20px 15px"}
       borderBottom={"1px solid #e6e6e6"}
     >
-      <Link>{data.title}</Link>
+      <Link to={`/discussion/${data.idDiscussion}`}>{data.title}</Link>
       <Box display={"flex"} height="16px" mt={"4px"}>
         <Text fontSize="xs" color={"gray.400"}>
           by {data.author}
@@ -49,14 +49,24 @@ function Discussion({ data }) {
 }
 
 function Home() {
+  function getHour() {
+    let date = new Date();
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    let second = date.getSeconds();
+    return `${hour}:${minute}:${second}`;
+  }
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   let globalState = useContext(DataContext);
 
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   const [newDiscussion, setNewDiscussion] = useState({
+    idDiscussion: randomId(),
     author: globalState.user.username,
     date: dateNow(),
+    hour: getHour(),
     title: "",
     description: "",
     countResponses: 10,
@@ -64,6 +74,29 @@ function Home() {
 
   function dateNow() {
     return new Date().toLocaleDateString().split(",")[0];
+  }
+  function randomId() {
+    return Math.floor(Math.random() * 1000000);
+  }
+  function handleEventButton() {
+    localStorage.setItem(
+      "discussions",
+      JSON.stringify(globalState.discussions)
+    );
+    let getDiscussions = JSON.parse(localStorage.getItem("discussions"));
+    localStorage.setItem(
+      "discussions",
+      JSON.stringify([...getDiscussions, newDiscussion])
+    );
+
+    globalState.setDiscussion([
+      ...globalState.discussions,
+      {
+        ...newDiscussion,
+      },
+    ]);
+
+    onClose();
   }
 
   return (
@@ -117,29 +150,7 @@ function Home() {
               colorScheme="orange"
               mr={3}
               w={"100%"}
-              onClick={() => {
-                // globalState.discussions == null ? "" : "";
-                localStorage.setItem(
-                  "discussions",
-                  JSON.stringify(globalState.discussions)
-                );
-                let getDiscussions = JSON.parse(
-                  localStorage.getItem("discussions")
-                );
-                localStorage.setItem(
-                  "discussions",
-                  JSON.stringify([...getDiscussions, newDiscussion])
-                );
-
-                globalState.setDiscussion([
-                  ...globalState.discussions,
-                  {
-                    ...newDiscussion,
-                  },
-                ]);
-
-                onClose();
-              }}
+              onClick={handleEventButton}
             >
               Create Discussion
             </Button>
@@ -156,7 +167,6 @@ function Home() {
         border={"none"}
       >
         <Button
-          // onClick={onOpen}
           colorScheme="orange"
           borderRadius={"50%"}
           w={"55px"}

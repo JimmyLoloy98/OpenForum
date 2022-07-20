@@ -4,17 +4,29 @@ import {
   Container,
   FormControl,
   Heading,
-  Input,
+  Input
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useContext } from "react";
 import Navbar from "../components/Navbar";
+import DataContext from "../context/context";
 
 function Login() {
   const [username, setUsername] = React.useState("");
   const [email, setEmail] = React.useState("");
+  let globalState = useContext(DataContext);
 
-  function handleSubmit(event) {
-    event.preventDefault();
+  function handleSubmit() {
+    const user = { username: username, email: email };
+
+    localStorage.setItem("person", JSON.stringify(user));
+
+    globalState.setUser(user);
+  }
+  function handleSubmitUsername(event) {
+    setUsername(event.target.value);
+  }
+  function handleSubmitEmail(event) {
+    setEmail(event.target.value);
   }
 
   return (
@@ -34,12 +46,14 @@ function Login() {
             Welcome to OpenForum
           </Heading>
 
-          <FormControl my={8} px={5} onSubmit={handleSubmit}>
+          <FormControl my={8} px={5}>
             <Input
               placeholder="Enter your username"
               focusBorderColor="orange.400"
               type={"text"}
               name={"username"}
+              value={username}
+              onChange={handleSubmitUsername}
             />
 
             <Input
@@ -48,6 +62,8 @@ function Login() {
               name="email"
               placeholder="Enter your email"
               focusBorderColor="orange.400"
+              value={email}
+              onChange={handleSubmitEmail}
             />
           </FormControl>
           <Button
@@ -55,6 +71,7 @@ function Login() {
             colorScheme="orange"
             w={"100%"}
             fontWeight={"light"}
+            onClick={handleSubmit}
           >
             ENTER
           </Button>

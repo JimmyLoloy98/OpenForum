@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Discussion from "../pages/Discussion";
-import DisplayDiscussion from "../pages/DisplayDiscussion";
+import ItemDiscussion from "../pages/ItemDiscussion";
 
 import DataContext from "../context/context";
 
@@ -93,7 +93,7 @@ function App() {
                 !globalState.user ? (
                   <Navigate to="/login" />
                 ) : (
-                  <DisplayDiscussion />
+                  <ItemDiscussion />
                 )
               }
             ></Route>

@@ -8,31 +8,64 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
 
 function ItemDiscussion() {
+  let [reply, setReply] = useState({
+    author: "",
+    date: "",
+    hour: "",
+    content: "",
+  });
+  let { id } = useParams();
+  let initialDiscussions = JSON.parse(localStorage.getItem("discussions"))
+    ? JSON.parse(localStorage.getItem("discussions"))
+    : [];
+  const [discussions, setDiscussions] = useState(initialDiscussions);
+
+  let findDiscussion = discussions.find(
+    (discussion) => discussion.idDiscussion == id
+  );
+
+  function handleReply(event) {
+    setReply({ ...reply, contentReply: event.target.value });
+  }
+
+  function handleSubmitReply() {
+    const formatDiscussion = discussions.map((d) => {
+      if (d.idDiscussion == id) {
+        return { ...d, replys: [...d.replys, reply] };
+      }
+      return d;
+    });
+    localStorage.setItem("discussions", JSON.stringify(discussions));
+    setDiscussions(formatDiscussion);
+  }
+  console.log(findDiscussion.replys[findDiscussion.replys.length - 2]);
   return (
     <>
       <Navbar />
 
       <Container maxW="60%" padding={"15px"} bg={"white"}>
         <Box>
-          <Heading fontWeight={"semibold"}>How to kill to Christopher</Heading>
+          <Heading fontWeight={"semibold"}>{findDiscussion.title}</Heading>
 
           <Box display={"flex"} height="16px" mt={2} mb={4}>
             <Text fontSize="sm" color={"gray.600"}>
-              PavelM
+              {findDiscussion.author}
             </Text>
             <Divider orientation="vertical" mx={"4px"} />
             <Text fontSize="sm" color={"gray.600"}>
-              2019-06-13
+              {findDiscussion.date}
             </Text>
             <Divider orientation="vertical" mx={"4px"} />
             <Text fontSize="sm" color={"gray.600"}>
-              21:45:18
+              {findDiscussion.hour != null ? findDiscussion.hour : "00:00:00"}
             </Text>
           </Box>
 
-          <Text fontSize={"xl"}>Some body in the sky</Text>
+          <Text fontSize={"xl"}>{findDiscussion.description}</Text>
         </Box>
 
         <Box mt={5} mb={6}>
@@ -41,8 +74,14 @@ function ItemDiscussion() {
             mb={4}
             placeholder="Write a comment..."
             focusBorderColor="orange.400"
+            onChange={handleReply}
           />
-          <Button colorScheme="orange" w={"100%"} fontWeight={"light"}>
+          <Button
+            colorScheme="orange"
+            w={"100%"}
+            fontWeight={"light"}
+            onClick={handleSubmitReply}
+          >
             Reply
           </Button>
         </Box>
@@ -50,7 +89,7 @@ function ItemDiscussion() {
         <Box>
           <Box display={"flex"} height="16px" mb={2}>
             <Text fontSize="sm" color={"gray.600"}>
-              JimmyLoloy98
+              {findDiscussion.replys[findDiscussion.replys.length - 1].author}
             </Text>
             <Divider orientation="vertical" mx={"4px"} />
             <Text fontSize="sm" color={"gray.600"}>

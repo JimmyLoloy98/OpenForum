@@ -27,16 +27,18 @@ function App() {
       : [
           {
             idDiscussion: randomId(),
-            autor: "J.K. Rowling",
+            author: "J.K. Rowling",
             date: "01/01/2001",
+            hour: "20:15:34",
             title: "Harry Potter y la piedra filosofal",
             countResponses: 10,
             description: "Harry Potter y la piedra filosofal",
             replys: [
               {
                 idReply: 11,
-                author: "J.K. Rowling",
+                author: "Joe Satriani",
                 date: "01/01/2022",
+                hour: "20:15:34",
                 content: "Harry Potter y la piedra filosofal",
               },
             ],

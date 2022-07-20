@@ -1,4 +1,5 @@
-import { Box, ChakraProvider, Link } from "@chakra-ui/react";
+import { Box, ChakraProvider, Link, Text } from "@chakra-ui/react";
+import React, { useState } from "react";
 import theme from "./theme";
 
 const linkStyles = {
@@ -9,9 +10,16 @@ const linkStyles = {
 };
 
 function Navbar() {
+  let users = JSON.parse(localStorage.getItem("person"));
+  let [user, setUser] = useState(users);
+
+  function logout() {
+    localStorage.removeItem("person");
+    window.location = "/";
+  }
+
   return (
     <ChakraProvider theme={theme}>
-      {/* move this to navbar component */}
       <Box as="nav" background="#ff6600" p="16px" mb="32px" width="100%">
         <Box
           color="white"
@@ -22,14 +30,16 @@ function Navbar() {
           alignItems="center"
         >
           <Link href="/" {...linkStyles}>
-            Chaos news
+            OpenForum News
           </Link>
-          <Link href="/login" {...linkStyles}>
-            Login
-          </Link>
+          <Box display={"flex"}>
+            <Text {...linkStyles}>{user != null ? user.username : ""}</Text>
+            <Link href="/login" ml={4} {...linkStyles} onClick={logout}>
+              {user != null ? "Logout" : "Login"}
+            </Link>
+          </Box>
         </Box>
       </Box>
-      {/* end navbar component */}
     </ChakraProvider>
   );
 }

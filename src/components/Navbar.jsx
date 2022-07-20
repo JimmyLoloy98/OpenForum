@@ -15,7 +15,6 @@ function Navbar() {
 
   function logout() {
     localStorage.removeItem("person");
-    window.location = "/";
   }
 
   return (

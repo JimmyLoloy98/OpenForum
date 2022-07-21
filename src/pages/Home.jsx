@@ -70,6 +70,11 @@ function Home() {
     title: "",
     description: "",
     countResponses: 10,
+    replys: [
+      {
+        author: "",
+      },
+    ],
   });
 
   function dateNow() {

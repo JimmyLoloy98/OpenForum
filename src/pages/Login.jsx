@@ -18,9 +18,12 @@ function Login() {
   function handleSubmit() {
     const user = { username: username, email: email };
 
-    localStorage.setItem("person", JSON.stringify(user));
-
-    globalState.setUser(user);
+    if (username == "" || email == "") {
+      alert("Please fill all the fields");
+    } else {
+      localStorage.setItem("person", JSON.stringify(user));
+      globalState.setUser(user);
+    }
   }
   function handleSubmitUsername(event) {
     setUsername(event.target.value);

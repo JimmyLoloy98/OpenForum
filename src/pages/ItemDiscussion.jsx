@@ -6,11 +6,11 @@ import {
   Heading,
   Text,
   Textarea,
+  Link,
 } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-
 
 function ReplyDiscussion() {
   return (
@@ -99,6 +99,10 @@ function ItemDiscussion() {
       <Navbar />
 
       <Container maxW="60%" padding={"15px"} bg={"white"}>
+        <Link href="/" size="lg">
+          <Button w="full">Volver</Button>
+        </Link>
+        <Divider my="4" />
         <Box>
           <Heading fontWeight={"semibold"}>{findDiscussion.title}</Heading>
 
